@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</head>
+<body>
+  <div class="container">
+    <div class="esquerda">
+      <div class="calendario">
+        <div class="mes">
+          <i class="fa fa-angle-left anterior"></i>
+            <div class="date"></div>
+          <i class="fa fa-angle-right proximo"></i>        
+        </div>
+        <div class="diaSemana">
+          <div>dom</div>
+          <div>seg</div>
+          <div>ter</div>
+          <div>qua</div>
+          <div>qui</div>
+          <div>sex</div>
+          <div>sab</div>
+        </div>
+        <div class="dias">
+          <!-- <div class="dia diaAnterior">29</div>
+          <div class="dia diaAnterior">30</div>
+          <div class="dia diaAnterior">31</div>
+          <div class="dia">1</div>
+          <div class="dia">2</div>
+          <div class="dia">3</div>
+          <div class="dia">4</div>
+          <div class="dia">5</div>
+          <div class="dia">6</div>
+          <div class="dia">7</div>
+          <div class="dia">8</div>
+          <div class="dia">9</div>
+          <div class="dia evento">10</div>
+          <div class="dia">11</div>
+          <div class="dia">12</div>
+          <div class="dia">13</div>
+          <div class="dia evento ativo">14</div>
+          <div class="dia hoje">15</div>
+          <div class="dia">16</div>
+          <div class="dia">17</div>
+          <div class="dia">18</div>
+          <div class="dia">19</div>
+          <div class="dia">20</div>
+          <div class="dia evento">21</div>
+          <div class="dia">22</div>
+          <div class="dia">23</div>
+          <div class="dia">24</div>
+          <div class="dia">25</div>
+          <div class="dia">26</div>
+          <div class="dia">27</div>
+          <div class="dia">28</div>
+          <div class="dia">29</div>
+          <div class="dia">30</div>
+          <div class="dia proximoDia">1</div>
+          <div class="dia proximoDia">2</div> -->
+        </div>
+        <div class="ir-hoje">
+          <div class="irPara">
+            <input type="text" placeholder="mm/aaaa" class="data-input">
+            <button class="ir-btn">Ir</button>
+          </div>
+          <button class="hoje-btn">Hoje</button>
+        </div>
+      </div>
+    </div>
+    <div class="direita">
+      <div class="dt-hoje">
+        <div class="d-evento">Qui</div>
+        <div class="dt-evento">26 Novembro 2023</div>
+      </div>
+      <div class="eventos">
+        <!-- <div class="evento">
+          <div class="titulo">
+            <i class="fas fa-circle"></i>
+            <h3 class="titulo-evento">Evento 1</h3>
+          </div>
+          <div class="hora-evento">10:00 - 22:00</div>
+        </div>
+        <div class="evento">
+          <div class="titulo">
+            <i class="fas fa-circle"></i>
+            <h3 class="titulo-evento">Evento 1</h3>
+          </div>
+          <div class="hora-evento">10:00 - 22:00</div>
+        </div>
+        <div class="evento">
+          <div class="titulo">
+            <i class="fas fa-circle"></i>
+            <h3 class="titulo-evento">Evento 1</h3>
+          </div>
+          <div class="hora-evento">10:00 - 22:00</div>
+        </div>
+        <div class="evento">
+          <div class="titulo">
+            <i class="fas fa-circle"></i>
+            <h3 class="titulo-evento">Evento 1</h3>
+          </div>
+          <div class="hora-evento">10:00 - 22:00</div>
+        </div> -->
+      </div>
+      <div class="add-evento-wrapper">
+        <div class="add-cabecalho-evento">
+          <div class="titulo">Compromisso</div>
+          <i class="fas fa-times fechar"></i>
+        </div>
+        <div class="add-evento-dados">
+          <div class="add-evento-input">
+            <input type="text" placeholder="Título do Evento" class="nome-evento">
+          </div>
+          <div class="add-evento-input">
+            <input type="text" placeholder="Início" class="hora-inicio">
+          </div>
+          <div class="add-evento-input">
+            <input type="text" placeholder="Término" class="hora-termino">
+          </div>
+        </div>
+        <div class="add-evento-footer">
+          <button class="add-evento-btn">Adicionar Compromisso</button>
+        </div>
+      </div>
+    </div>
+    <button class="add-evento"><i class="fas fa-plus"></i></button>
+  </div>
+  
+  
+
+  <script src="main.js"></script>
+  <!-- <script src="events.js"></script> -->
+</body>
+</html>
