@@ -10,6 +10,7 @@ const calendar = document.querySelector(".calendario"),
   eventDate = document.querySelector(".dt-evento"),
   tarefasContainer = document.querySelector(".tarefas-lista"),
   addTarefaBtn = document.querySelector(".add-tarefa-float"),
+  addTarefaBtnMobile = document.querySelector(".add-tarefa-float-mobile"),
   addTarefaWrapper = document.querySelector(".add-tarefa-wrapper"),
   addTarefaCloseBtn = document.querySelector(".fechar-tarefa"),
   addTarefaInput = document.querySelector(".descricao-tarefa"),
@@ -368,12 +369,21 @@ addTarefaBtn.addEventListener("click", () => {
   addTarefaWrapper.classList.toggle("ativo");
 });
 
+// Evento para o botão mobile também
+if (addTarefaBtnMobile) {
+  addTarefaBtnMobile.addEventListener("click", () => {
+    addTarefaWrapper.classList.toggle("ativo");
+  });
+}
+
 addTarefaCloseBtn.addEventListener("click", () => {
   addTarefaWrapper.classList.remove("ativo");
 });
 
 document.addEventListener("click", (e) => {
-  if (e.target !== addTarefaBtn && !addTarefaWrapper.contains(e.target)) {
+  if (e.target !== addTarefaBtn && 
+      e.target !== addTarefaBtnMobile && 
+      !addTarefaWrapper.contains(e.target)) {
     addTarefaWrapper.classList.remove("ativo");
   }
 });
