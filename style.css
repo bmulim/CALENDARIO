@@ -17,6 +17,7 @@
   font-family: 'Playfair Display', serif;
   font-family: 'Raleway', sans-serif;
   font-family: 'Roboto', sans-serif;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::-webkit-scrollbar {
@@ -448,6 +449,10 @@ body {
   padding: 0 20px;
   color: var(--cor-primaria);
   border-radius: 5px;
+  font-size: 1rem;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .calendario .ir-hoje button {
@@ -727,6 +732,10 @@ body {
   font-weight: 400;
   color: #373c4f;
   transition: border-color 0.3s ease;
+  background-color: transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .add-tarefa-input input::placeholder {
@@ -875,21 +884,84 @@ body {
   .container {
     width: 95%;
     flex-direction: column;
+    height: calc(100vh - 76px);
+    max-height: none;
+    gap: 10px;
+    padding: 10px;
   }
 
   .esquerda {
     width: 100% !important;
-    padding: 15px;
+    height: 52%;
+    padding: 12px;
+  }
+
+  .calendario {
+    height: 100%;
+  }
+
+  .calendario .mes {
+    height: 60px;
+    flex-shrink: 0;
+  }
+
+  .calendario .diaSemana {
+    height: 42px;
+    flex-shrink: 0;
+  }
+
+  .calendario .dias {
+    flex: 1;
+    overflow-y: auto;
+    align-content: flex-start;
+  }
+
+  .calendario .dias .dia {
+    height: 55px;
+    min-height: 55px;
+  }
+
+  .calendario .ir-hoje {
+    height: 42px;
+    flex-shrink: 0;
   }
 
   .container .direita {
     width: 100% !important;
-    padding: 20px;
-    margin-top: 20px;
+    height: 48%;
+    padding: 12px;
+    margin-top: 0;
   }
 
-  .calendario {
-    min-height: 450px;
+  .direita .dt-hoje {
+    flex-shrink: 0;
+  }
+
+  .tarefas-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .tarefas-cabecalho {
+    flex-shrink: 0;
+  }
+
+  .tarefas-lista {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .add-tarefa-float {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+
+  .add-tarefa-float-mobile {
+    display: none;
   }
 
   .calendario::before,
@@ -900,76 +972,38 @@ body {
 
 @media screen and (max-width: 768px) {
   body {
-    padding: 10px 0 70px 0;
-  }
-
-  .container {
-    width: 98%;
-    margin: 10px auto;
-    padding: 3px;
-  }
-
-  .esquerda {
-    padding: 10px;
-  }
-
-  .calendario {
-    border-radius: 8px;
-  }
-
-  .calendario .mes {
-    height: 100px;
-    padding: 0 15px;
-    font-size: 1rem;
-  }
-
-  .calendario .mes .prev,
-  .calendario .mes .next {
-    width: 35px;
-    height: 35px;
-    font-size: 1.2rem;
-  }
-
-  .calendario .diaSemana {
-    height: 50px;
-    font-size: 0.85rem;
-    padding: 0 5px;
-  }
-
-  .calendario .dias {
-    padding: 0 5px;
-    gap: 2px;
-  }
-
-  body {
     height: 100vh;
     padding: 8px 8px 60px 8px;
     overflow: hidden;
   }
 
   .container {
+    width: 98%;
     height: calc(100vh - 76px);
     max-height: none;
     flex-direction: column;
-    gap: 8px;
+    margin: 0 auto;
     padding: 8px;
+    gap: 8px;
     border-radius: 12px;
   }
 
   .esquerda {
     width: 100%;
-    height: 55%;
+    height: 52%;
     padding: 10px;
   }
 
   .calendario {
     height: 100%;
+    border-radius: 10px;
   }
 
   .calendario .mes {
     height: 60px;
     padding: 0 12px;
     font-size: 1rem;
+    flex-shrink: 0;
   }
 
   .calendario .mes .prev,
@@ -983,16 +1017,22 @@ body {
     height: 40px;
     font-size: 0.8rem;
     padding: 0 4px;
+    flex-shrink: 0;
   }
 
   .calendario .dias {
+    flex: 1;
     padding: 0 4px;
+    gap: 2px;
+    overflow-y: auto;
+    align-content: flex-start;
   }
 
   .calendario .dias .dia {
     height: 55px;
+    min-height: 55px;
     font-size: 0.9rem;
-    border-radius: 4px;
+    border-radius: 6px;
   }
 
   .calendario .dias .hoje {
@@ -1000,28 +1040,29 @@ body {
   }
 
   .calendario .dias .ativo {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
 
   .calendario .ir-hoje {
     height: 40px;
-    padding: 10px;
-    margin-bottom: 15px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    flex-shrink: 0;
   }
 
   .container .direita {
     width: 100%;
-    height: 45%;
+    height: 48%;
     margin-top: 0;
     padding: 10px;
   }
 
   .direita .dt-hoje {
     min-height: 50px;
-    padding: 0 15px;
-    padding-left: 20px;
-    margin-top: 10px;
+    padding: 10px 15px;
+    margin-top: 8px;
     margin-bottom: 10px;
+    flex-shrink: 0;
   }
 
   .today-date .d-evento {
@@ -1030,10 +1071,16 @@ body {
 
   .tarefas-container {
     padding: 10px 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
   }
 
   .tarefas-cabecalho {
     margin-bottom: 10px;
+    flex-shrink: 0;
   }
 
   .tarefas-titulo {
@@ -1041,24 +1088,28 @@ body {
   }
 
   .add-tarefa-float {
-    display: none;
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
   }
 
   .add-tarefa-float-mobile {
-    display: flex;
+    display: none;
   }
 
   .tarefas-lista {
     gap: 8px;
+    flex: 1;
+    overflow-y: auto;
   }
 
   .tarefa {
     padding: 12px 15px;
-    border-radius: 6px;
+    border-radius: 8px;
   }
 
   .tarefa-texto {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 
   .add-tarefa-wrapper {
@@ -1068,13 +1119,6 @@ body {
 
   .add-tarefa-wrapper.ativo {
     max-height: 260px;
-  }
-
-  .add-tarefa-float-mobile {
-    bottom: 15px;
-    right: 20px;
-    width: 48px;
-    height: 48px;
   }
 
   .creditos {
@@ -1086,88 +1130,102 @@ body {
 @media screen and (max-width: 480px) {
   body {
     height: 100vh;
-    padding: 5px 5px 60px 5px;
+    padding: 0;
     overflow: hidden;
   }
 
   .container {
     width: 100%;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 55px);
     max-height: none;
     flex-direction: column;
     margin: 0;
     padding: 5px;
-    border-radius: 12px;
-    gap: 8px;
+    border-radius: 0;
+    gap: 6px;
   }
 
   .esquerda {
     width: 100%;
-    height: 50%;
-    padding: 8px;
+    height: 48%;
+    padding: 6px;
   }
 
   .calendario {
     height: 100%;
-    border-radius: 12px;
+    border-radius: 10px;
   }
 
   .calendario .mes {
-    height: 55px;
+    height: 50px;
     padding: 0 8px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     flex-shrink: 0;
   }
 
   .calendario .mes .prev,
   .calendario .mes .next {
-    width: 30px;
-    height: 30px;
-    font-size: 0.95rem;
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
   }
 
   .calendario .diaSemana {
-    height: 32px;
-    font-size: 0.7rem;
+    height: 28px;
+    font-size: 0.65rem;
     padding: 0 2px;
     flex-shrink: 0;
   }
 
+  .calendario .diaSemana div {
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
   .calendario .dias {
-    padding: 0 4px;
+    flex: 1;
+    padding: 2px 4px;
     gap: 2px;
-    justify-content: flex-start;
+    overflow-y: auto;
+    align-content: flex-start;
   }
 
   .calendario .dias .dia {
     width: calc(14.28% - 2px);
-    height: 42px;
-    min-height: 42px;
-    font-size: 0.8rem;
-    border: 1px solid #f0f0f0;
-    border-radius: 6px;
+    height: 38px;
+    min-height: 38px;
+    max-height: 38px;
+    font-size: 0.75rem;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
   }
 
   .calendario .dias .hoje {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 
   .calendario .dias .ativo {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .calendario .dias .evento::after {
     height: 3px;
-    width: 70%;
-    bottom: 3px;
+    width: 60%;
+    bottom: 2px;
+  }
+
+  .calendario .dias .diaAnterior,
+  .calendario .dias .proximoDia {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .calendario .ir-hoje {
     flex-direction: row;
-    height: 40px;
-    gap: 6px;
-    padding: 6px 8px;
-    margin-bottom: 6px;
+    height: 36px;
+    gap: 4px;
+    padding: 4px 6px;
+    margin-bottom: 4px;
     flex-shrink: 0;
   }
 
@@ -1175,94 +1233,116 @@ body {
     flex: 1;
     display: flex;
     gap: 4px;
+    align-items: center;
   }
 
   .calendario .ir-hoje .irPara input {
-    height: 32px;
-    font-size: 0.85rem;
-    padding: 0 8px;
+    height: 30px;
+    font-size: 0.8rem;
+    padding: 0 6px;
     flex: 1;
+    min-width: 0;
   }
 
   .calendario .ir-hoje .irPara .ir-btn {
-    height: 32px;
-    padding: 0 12px;
-    font-size: 0.85rem;
+    height: 30px;
+    padding: 0 10px;
+    font-size: 0.8rem;
     white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .calendario .ir-hoje .hoje-btn {
-    height: 32px;
-    padding: 0 12px;
-    font-size: 0.85rem;
+    height: 30px;
+    padding: 0 10px;
+    font-size: 0.8rem;
     white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .container .direita {
     width: 100%;
-    height: 50%;
-    padding: 8px;
+    height: 52%;
+    padding: 6px;
     margin-top: 0;
   }
 
   .direita .dt-hoje {
     flex-direction: row;
     align-items: center;
-    min-height: 40px;
-    padding: 8px 12px;
+    min-height: 36px;
+    padding: 6px 10px;
     gap: 8px;
-    margin-top: 6px;
+    margin-top: 4px;
     margin-bottom: 6px;
     flex-shrink: 0;
   }
 
   .today-date .d-evento {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
   }
 
   .today-date .dt-evento {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 
   .tarefas-container {
-    padding: 6px 8px;
+    padding: 4px 6px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: 0;
   }
 
   .tarefas-cabecalho {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px;
   }
 
   .tarefas-titulo {
-    font-size: 0.95rem;
-    padding-left: 8px;
+    font-size: 0.9rem;
+    padding-left: 6px;
+    margin: 0;
   }
 
   .add-tarefa-float {
-    display: none;
-  }
-
-  .add-tarefa-float-mobile {
-    display: flex;
-  }
-
-  .tarefas-lista {
-    gap: 6px;
-  }
-
-  .sem-tarefas {
-    padding: 20px 10px;
-  }
-
-  .sem-tarefas p {
+    width: 32px;
+    height: 32px;
     font-size: 0.9rem;
   }
 
+  .add-tarefa-float-mobile {
+    display: none;
+  }
+
+  .tarefas-lista {
+    flex: 1;
+    gap: 6px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 2px;
+  }
+
+  .sem-tarefas {
+    padding: 15px 10px;
+  }
+
+  .sem-tarefas p {
+    font-size: 0.85rem;
+  }
+
   .tarefa {
-    padding: 10px;
+    padding: 8px 10px;
     flex-wrap: nowrap;
     flex-direction: row;
     gap: 8px;
+    border-radius: 8px;
   }
 
   .tarefa-conteudo {
@@ -1270,75 +1350,81 @@ body {
     flex: 1;
     margin-bottom: 0;
     min-width: 0;
-  }
-
-  .tarefa-texto {
-    font-size: 0.85rem;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
   .tarefa-checkbox {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     flex-shrink: 0;
+  }
+
+  .tarefa-texto {
+    font-size: 0.8rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.3;
   }
 
   .tarefa-excluir {
     align-self: center;
     margin-top: 0;
-    padding: 4px 8px;
+    padding: 4px 6px;
     flex-shrink: 0;
+    font-size: 0.9rem;
   }
 
   .add-tarefa-wrapper {
-    width: 95%;
-    bottom: 70px;
+    width: 94%;
+    bottom: 60px;
     max-width: calc(100% - 20px);
+    border-radius: 12px;
   }
 
   .add-tarefa-wrapper.ativo {
-    max-height: 260px;
+    max-height: 240px;
   }
 
   .add-cabecalho-tarefa {
-    height: 45px;
+    height: 42px;
     padding: 0 12px;
   }
 
   .add-cabecalho-tarefa .titulo {
-    font-size: 1rem;
-  }
-
-  .add-tarefa-dados {
-    padding: 12px;
-  }
-
-  .add-tarefa-input input {
-    height: 42px;
-    font-size: 0.9rem;
-    padding: 0 12px;
-  }
-
-  .add-tarefa-footer {
-    padding: 12px;
-  }
-
-  .add-tarefa-btn {
-    height: 42px;
     font-size: 0.95rem;
   }
 
-  .add-tarefa-float-mobile {
-    bottom: 15px;
-    right: 15px;
-    width: 50px;
-    height: 50px;
-    font-size: 1.1rem;
+  .add-tarefa-dados {
+    padding: 10px 12px;
+  }
+
+  .add-tarefa-input input {
+    height: 40px;
+    font-size: 0.85rem;
+    padding: 0 10px;
+  }
+
+  .add-tarefa-footer {
+    padding: 10px 12px;
+  }
+
+  .add-tarefa-btn {
+    height: 40px;
+    font-size: 0.9rem;
   }
 
   .creditos {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 9px;
-    padding: 6px 5px;
+    padding: 0;
   }
 }
