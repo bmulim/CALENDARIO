@@ -1,10 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Roboto:wght@300;400;500;700&display=swap');
 
-:root{
-  --cor-primaria:#526a9f9d;
+:root {
+  --cor-primaria: #526a9f;
+  --cor-secundaria: #b0a26e;
+  --cor-hover: #6b84be;
+  --cor-ativo: #4a5f8f;
+  --transicao-padrao: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -16,78 +20,99 @@
 ::-webkit-scrollbar {
   width: 5px;
 }
+
 ::-webkit-scrollbar-track {
   background: #f5f5f5;
   border-radius: 50px;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--primary-clr);
   border-radius: 50px;
 }
 
 
-body{
+body {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgb(35,44,63);
-  background: -moz-linear-gradient(344deg, rgba(35,44,63,1) 25%, rgba(176,162,110,1) 66%);
-  background: -webkit-linear-gradient(344deg, rgba(35,44,63,1) 25%, rgba(176,162,110,1) 66%);
-  background: linear-gradient(344deg, rgba(35,44,63,1) 25%, rgba(176,162,110,1) 66%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#232c3f",endColorstr="#b0a26e",GradientType=1);
+  background: rgb(35, 44, 63);
+  background: -moz-linear-gradient(344deg, rgba(35, 44, 63, 1) 25%, rgba(176, 162, 110, 1) 66%);
+  background: -webkit-linear-gradient(344deg, rgba(35, 44, 63, 1) 25%, rgba(176, 162, 110, 1) 66%);
+  background: linear-gradient(344deg, rgba(35, 44, 63, 1) 25%, rgba(176, 162, 110, 1) 66%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#232c3f", endColorstr="#b0a26e", GradientType=1);
+  padding-bottom: 50px;
 }
 
-.container{
+.container {
   position: relative;
-  width:80%;
-  min-width: 850px;
-  margin: 0 auto;
+  width: 80%;
+  max-width: 1400px;
+  min-width: 320px;
+  margin: 20px auto;
   padding: 5px;
   color: #fff;
   display: flex;
   border-radius: 10px;
   background-color: #232c3f;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.5s ease-in;
 }
 
-.esquerda{
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.esquerda {
   width: 60%;
   padding: 20px;
 }
 
-.calendario{
+.calendario {
   position: relative;
   width: 100%;
-  height:100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
   color: #878895;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: #fff;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .calendario::before,
-.calendario::after{
+.calendario::after {
   content: "";
   position: absolute;
   top: 50%;
   left: 100%;
   width: 12px;
   height: 97%;
-  border-radius:  0 5px 5px 0;
+  border-radius: 0 5px 5px 0;
   background-color: #d3d5d6d7;
   transform: translateY(-50%);
 }
 
-.calendario::before{
+.calendario::before {
   height: 94%;
   left: calc(100% + 12px);
   background-color: rgb(153, 153, 153);
 }
 
-.calendario .mes{
+.calendario .mes {
   width: 100%;
   height: 150px;
   display: flex;
@@ -100,16 +125,27 @@ body{
 }
 
 .calendario .mes .prev,
-.calendario .mes .next{
+.calendario .mes .next {
   cursor: pointer;
+  font-size: 1.5rem;
+  padding: 10px;
+  border-radius: 50%;
+  transition: var(--transicao-padrao);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
 }
 
 .calendario .mes .prev:hover,
-.calendario .mes .next:hover{
+.calendario .mes .next:hover {
   color: var(--cor-primaria);
+  background-color: rgba(82, 106, 159, 0.1);
+  transform: scale(1.1);
 }
 
-.calendario .diaSemana{
+.calendario .diaSemana {
   width: 100%;
   height: 100px;
   display: flex;
@@ -121,14 +157,14 @@ body{
   text-transform: capitalize;
 }
 
-.calendario .diaSemana div{
+.calendario .diaSemana div {
   width: 14.28%;
   height: 100%;
   display: flex;
   align-items: center;
 }
 
-.calendario .dias{
+.calendario .dias {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -137,9 +173,22 @@ body{
   font-size: 1rem;
   font-weight: 500;
   margin-bottom: 20px;
+  animation: fadeInDays 0.4s ease-in-out;
 }
 
-.calendario .dias .dia{
+@keyframes fadeInDays {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.calendario .dias .dia {
   width: 14.28%;
   height: 90px;
   display: flex;
@@ -148,44 +197,182 @@ body{
   cursor: pointer;
   color: var(--cor-primaria);
   border: 1px solid #f5f5f5;
+  transition: var(--transicao-padrao);
+  position: relative;
+  font-weight: 500;
 }
 
-.calendario .dia:not(.diaAnterior, .proximaData):hover{
+.calendario .dia:not(.diaAnterior, .proximoDia):hover {
   color: #fff;
-  background-color: var(--cor-primaria);
+  background-color: var(--cor-hover);
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(82, 106, 159, 0.3);
+  z-index: 10;
 }
 
-.calendario .dias .diaAnterior
-.calendario .dias .proximoDia{
-  color: #b3b3b3;
+.calendario .dias .diaAnterior,
+.calendario .dias .proximoDia {
+  color: transparent;
+  cursor: default;
+  pointer-events: none;
+  background-color: #fafafa;
 }
 
-.calendario .dias .ativo{
+/* Animação de entrada dos dias */
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.calendario .dias .dia:not(.diaAnterior, .proximoDia) {
+  animation: popIn 0.3s ease-out backwards;
+}
+
+/* Delay progressivo para efeito cascata */
+.calendario .dias .dia:nth-child(1) {
+  animation-delay: 0.02s;
+}
+
+.calendario .dias .dia:nth-child(2) {
+  animation-delay: 0.04s;
+}
+
+.calendario .dias .dia:nth-child(3) {
+  animation-delay: 0.06s;
+}
+
+.calendario .dias .dia:nth-child(4) {
+  animation-delay: 0.08s;
+}
+
+.calendario .dias .dia:nth-child(5) {
+  animation-delay: 0.10s;
+}
+
+.calendario .dias .dia:nth-child(6) {
+  animation-delay: 0.12s;
+}
+
+.calendario .dias .dia:nth-child(7) {
+  animation-delay: 0.14s;
+}
+
+.calendario .dias .dia:nth-child(8) {
+  animation-delay: 0.16s;
+}
+
+.calendario .dias .dia:nth-child(9) {
+  animation-delay: 0.18s;
+}
+
+.calendario .dias .dia:nth-child(10) {
+  animation-delay: 0.20s;
+}
+
+.calendario .dias .dia:nth-child(11) {
+  animation-delay: 0.22s;
+}
+
+.calendario .dias .dia:nth-child(12) {
+  animation-delay: 0.24s;
+}
+
+.calendario .dias .dia:nth-child(13) {
+  animation-delay: 0.26s;
+}
+
+.calendario .dias .dia:nth-child(14) {
+  animation-delay: 0.28s;
+}
+
+.calendario .dias .ativo {
   position: relative;
   font-size: 2rem;
   color: #fff;
   background-color: var(--cor-primaria);
+  animation: pulseActive 0.4s ease-in-out;
 }
 
-.calendario .dias .ativo::before{
+@keyframes pulseActive {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.calendario .dias .ativo::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  box-shadow: 0 0 10px 2px var(--cor-primaria);
+  box-shadow: 0 0 20px 3px rgba(82, 106, 159, 0.6);
+  animation: glowPulse 2s ease-in-out infinite;
 }
 
-.calendario .dias .hoje{
-  font-size: 3rem;
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px 3px rgba(82, 106, 159, 0.6);
+  }
+
+  50% {
+    box-shadow: 0 0 30px 5px rgba(82, 106, 159, 0.8);
+  }
 }
 
-.calendario .dias .evento{
+.calendario .dias .hoje {
+  font-size: 2.5rem;
+  font-weight: 600;
   position: relative;
 }
 
-.calendario .dias .evento::after{
+.calendario .dias .hoje::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--cor-secundaria);
+  animation: todayBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes todayBounce {
+
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(-5px);
+  }
+}
+
+.calendario .dias .evento {
+  position: relative;
+}
+
+.calendario .dias .evento::after {
   content: '';
   position: absolute;
   bottom: 10%;
@@ -195,22 +382,25 @@ body{
   border-radius: 30px;
   transform: translateX(-50%);
   background-color: var(--cor-primaria);
+  transition: var(--transicao-padrao);
 }
 
-.calendario .evento:hover::after{
+.calendario .evento:hover::after {
   background-color: #fff;
+  height: 8px;
+  bottom: 8%;
 }
 
-.calendario .ativo.evento::after{
+.calendario .ativo.evento::after {
   background-color: #fff;
   bottom: 20%;
 }
 
-.calendario .ativo.evento{
+.calendario .ativo.evento {
   padding-bottom: 10px;
 }
 
-.calendario .ir-hoje{
+.calendario .ir-hoje {
   width: 100%;
   height: 50px;
   display: flex;
@@ -222,7 +412,7 @@ body{
   color: var(--cor-primaria);
 }
 
-.calendario .ir-hoje .irPara{
+.calendario .ir-hoje .irPara {
   display: flex;
   align-items: center;
   border-radius: 5px;
@@ -230,7 +420,7 @@ body{
   border: 1px solid var(--cor-primaria);
 }
 
-.calendario .ir-hoje .irPara input{
+.calendario .ir-hoje .irPara input {
   width: 100%;
   height: 30px;
   outline: none;
@@ -241,34 +431,38 @@ body{
   border-radius: 5px;
 }
 
-.calendario .ir-hoje button{
-  padding:  5px 10px;
+.calendario .ir-hoje button {
+  padding: 5px 10px;
   border: 1px solid var(--cor-primaria);
   border-radius: 5px;
   background-color: transparent;
   cursor: pointer;
   color: var(--cor-primaria);
+  transition: var(--transicao-padrao);
+  font-weight: 500;
 }
 
-.calendario .ir-hoje button:hover{
+.calendario .ir-hoje button:hover {
   color: #fff;
   background-color: var(--cor-primaria);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(82, 106, 159, 0.3);
 }
 
-.calendario .ir-hoje .irPara button{
+.calendario .ir-hoje .irPara button {
   border: none;
   border-left: 1px solid var(--cor-primaria);
   border-radius: 0;
 }
 
-.container .direita{
+.container .direita {
   position: relative;
   width: 40%;
   min-height: 100%;
   padding: 20px 0;
 }
 
-.direita .dt-hoje{
+.direita .dt-hoje {
   width: 100%;
   height: 50px;
   display: flex;
@@ -283,117 +477,165 @@ body{
   text-transform: capitalize;
 }
 
-.today-date .d-evento{
+.today-date .d-evento {
   font-size: 2rem;
   font-weight: 500;
 }
 
-.today-date .dt-evento{
+.today-date .dt-evento {
   font-size: 1rem;
   font-weight: 400;
   color: #878895;
 }
 
-.eventos{
+/* Estilos para o container de tarefas */
+.tarefas-container {
   width: 100%;
   height: 100%;
   max-height: 600px;
+  padding: 20px;
+}
+
+.tarefas-titulo {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-bottom: 15px;
+  color: #fff;
+  padding-left: 10px;
+  border-left: 4px solid var(--cor-primaria);
+}
+
+.tarefas-lista {
+  width: 100%;
+  height: calc(100% - 50px);
   overflow-x: hidden;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 4px;
+  gap: 10px;
+  padding-right: 5px;
 }
 
-.eventos .evento{
-  position: relative;
-  width: 95%;
-  min-height: 70px;
+.tarefa {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 5px;
-  padding: 0 20px;
-  padding-left: 50px;
-  color: #fff;
+  justify-content: space-between;
+  background: linear-gradient(90deg, rgba(176, 162, 110, 0.3), transparent);
+  padding: 15px 20px;
+  border-radius: 8px;
+  transition: var(--transicao-padrao);
+  border-left: 3px solid var(--cor-primaria);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.tarefa:hover {
+  background: linear-gradient(90deg, var(--cor-primaria), transparent);
+  transform: translateX(5px);
+  box-shadow: 0 4px 15px rgba(82, 106, 159, 0.2);
+}
+
+.tarefa-conteudo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+.tarefa-checkbox {
+  width: 20px;
+  height: 20px;
   cursor: pointer;
-  background: linear-gradient(90deg, #b0a26e, transparent);
+  accent-color: var(--cor-primaria);
 }
 
-.eventos .evento:nth-child(even){
-  background: transparent;
-}
-
-.eventos .evento:hover{
-  background:  linear-gradient(90deg, var(--cor-primaria), transparent);;
-}
-
-.eventos .evento .titulo{
-  display: flex;
-  align-items: center;
-  pointer-events: none;
-}
-.eventos .evento .titulo .titulo-evento{
+.tarefa-texto {
   font-size: 1rem;
-  font-weight: 400;
-  margin-left: 20px;
+  color: #fff;
+  transition: all 0.3s ease;
 }
 
-.eventos .evento .titulo i{
-  color: var(--cor-primaria);
-  font-size: 0.5rem;
+.tarefa.concluida .tarefa-texto {
+  text-decoration: line-through;
+  opacity: 0.6;
+  color: #b3b3b3;
 }
 
-.eventos .evento:hover .titulo i,
-.eventos .evento:hover .hora-evento{
-  color: rgb(202, 171, 57);
+.tarefa-excluir {
+  background: transparent;
+  border: none;
+  color: #ff6b6b;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: var(--transicao-padrao);
+  opacity: 0.7;
 }
 
-.eventos .evento .titulo .hora-evento{
-  font-size: .8rem;
-  font-weight: 400;
+.tarefa-excluir:hover {
+  opacity: 1;
+  background: rgba(255, 107, 107, 0.2);
+  transform: scale(1.2) rotate(10deg);
+}
+
+.sem-tarefas {
+  text-align: center;
+  padding: 40px 20px;
   color: #878895;
-  margin-left: 15px;
-  pointer-events: none;
 }
 
-.eventos .evento::after{
-  content: "✓";
-  position: absolute;
-  top: 50%;
-  right: 0;
-  font-size: 3rem;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  opacity: .3;
-  color: var(--cor-primaria);
-  transform: translateY(-50%);
+.sem-tarefas p {
+  font-size: 1.1rem;
+  font-style: italic;
 }
 
-.eventos .evento:hover::after{
-  display: flex;
-}
-
-.add-evento-wrapper{
+/* Estilos para o modal de adicionar tarefa */
+.add-tarefa-wrapper {
   position: absolute;
   bottom: 100px;
   left: 50%;
   width: 90%;
   max-height: 0;
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: #fff;
   transform: translateX(-50%);
-  transition: max-height 0.5s;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
+  z-index: 100;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
-.add-evento-wrapper.ativo{
-  max-height: 300px;
+.add-tarefa-wrapper.ativo {
+  max-height: 280px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: modalSlideUp 0.4s ease-out;
 }
 
-.add-cabecalho-evento{
+@keyframes modalSlideUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.add-cabecalho-tarefa {
   width: 100%;
   height: 50px;
   display: flex;
@@ -401,72 +643,71 @@ body{
   justify-content: space-between;
   padding: 0 20px;
   color: #373c4f;
-  border-bottom: 1px solid#f5f5f5;
+  border-bottom: 1px solid #f5f5f5;
 }
 
-.add-cabecalho-evento .fechar{
+.add-cabecalho-tarefa .fechar-tarefa {
   font-size: 1.5rem;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
-.add-cabecalho-evento .fechar:hover{
+.add-cabecalho-tarefa .fechar-tarefa:hover {
   color: var(--cor-primaria);
 }
 
-.add-cabecalho-evento .titulo{
+.add-cabecalho-tarefa .titulo {
   font-size: 1.2rem;
   font-weight: 500;
 }
 
-.add-evento-dados{
+.add-tarefa-dados {
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
   padding: 20px;
 }
 
-.add-evento-dados .add-evento-input{
+.add-tarefa-input {
   width: 100%;
-  height: 40%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
 }
 
-.add-evento-dados .add-evento-input input{
+.add-tarefa-input input {
   width: 100%;
-  height: 100%;
+  height: 45px;
   outline: none;
   border: none;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 2px solid #f5f5f5;
   padding: 0 10px;
   font-size: 1rem;
   font-weight: 400;
   color: #373c4f;
+  transition: border-color 0.3s ease;
 }
 
-.add-evento-dados .add-evento-input input::placeholder{
-  color: #a5a5a5
+.add-tarefa-input input::placeholder {
+  color: #a5a5a5;
 }
-.add-evento-dados .add-evento-input input:focus{
+
+.add-tarefa-input input:focus {
   border-color: var(--cor-primaria);
 }
 
-.add-evento-dados .add-evento-input input:focus::placeholder{
+.add-tarefa-input input:focus::placeholder {
   color: var(--cor-primaria);
 }
 
-.add-evento-footer{
+.add-tarefa-footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 15px 20px;
 }
 
-.add-evento-btn{
+.add-tarefa-btn {
   height: 40px;
   font-size: 1rem;
   font-weight: 500;
@@ -476,57 +717,421 @@ body{
   background-color: var(--cor-primaria);
   border-radius: 5px;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 5px 20px;
   border: 1px solid var(--cor-primaria);
+  transition: all 0.3s ease;
 }
 
-.add-evento-btn:hover{
+.add-tarefa-btn:hover {
   color: var(--cor-primaria);
   background-color: transparent;
+  transform: translateY(-2px);
 }
 
-.add-evento{
+.add-tarefa-float {
   position: absolute;
   bottom: 30px;
   right: 30px;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  color: #878895;
-  border: 2px solid #878895;
-  opacity: .5;
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: var(--cor-primaria);
+  border: none;
   border-radius: 50%;
-  background-color: transparent;
   cursor: pointer;
+  box-shadow: 0 4px 15px rgba(82, 106, 159, 0.4);
+  transition: var(--transicao-padrao);
+  z-index: 50;
+  animation: floatBounce 3s ease-in-out infinite;
 }
 
-.add-evento:hover{
-  opacity: 1;
+@keyframes floatBounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
-.add-evento i {
+.add-tarefa-float:hover {
+  transform: scale(1.15) rotate(90deg);
+  box-shadow: 0 6px 20px rgba(82, 106, 159, 0.6);
+  background-color: var(--cor-hover);
+  animation: none;
+}
+
+.add-tarefa-float i {
   pointer-events: none;
 }
 
 .creditos {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   text-align: center;
-  padding: 10px;
-  font-size: 12px;
+  padding: 12px 10px;
+  font-size: 13px;
   color: #fff;
-  background-color: #939393;
+  background-color: rgba(147, 147, 147, 0.95);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
 }
+
+.creditos p {
+  margin: 0;
+  font-weight: 500;
+}
+
 .creditos a {
   color: #fff;
   text-decoration: none;
   font-weight: 600;
 }
+
 .creditos a:hover {
   text-decoration: underline;
+}
+
+/* Responsividade */
+@media screen and (max-width: 1024px) {
+  .container {
+    width: 95%;
+    flex-direction: column;
+  }
+
+  .esquerda {
+    width: 100% !important;
+    padding: 15px;
+  }
+
+  .container .direita {
+    width: 100% !important;
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  .calendario {
+    min-height: 450px;
+  }
+
+  .calendario::before,
+  .calendario::after {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    padding: 10px 0 70px 0;
+  }
+
+  .container {
+    width: 98%;
+    margin: 10px auto;
+    padding: 3px;
+  }
+
+  .esquerda {
+    padding: 10px;
+  }
+
+  .calendario {
+    border-radius: 8px;
+  }
+
+  .calendario .mes {
+    height: 100px;
+    padding: 0 15px;
+    font-size: 1rem;
+  }
+
+  .calendario .mes .prev,
+  .calendario .mes .next {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+
+  .calendario .diaSemana {
+    height: 50px;
+    font-size: 0.85rem;
+    padding: 0 5px;
+  }
+
+  .calendario .dias {
+    padding: 0 5px;
+    gap: 2px;
+  }
+
+  .calendario .dias .dia {
+    height: 55px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+  }
+
+  .calendario .dias .hoje {
+    font-size: 1.8rem;
+  }
+
+  .calendario .dias .ativo {
+    font-size: 1.4rem;
+  }
+
+  .calendario .ir-hoje {
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+
+  .direita .dt-hoje {
+    padding: 0 15px;
+    padding-left: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .today-date .d-evento {
+    font-size: 1.5rem;
+  }
+
+  .tarefas-container {
+    padding: 10px 15px;
+  }
+
+  .tarefas-titulo {
+    font-size: 1.1rem;
+  }
+
+  .tarefas-lista {
+    gap: 8px;
+  }
+
+  .tarefa {
+    padding: 12px 15px;
+    border-radius: 6px;
+  }
+
+  .tarefa-texto {
+    font-size: 0.9rem;
+  }
+
+  .add-tarefa-wrapper {
+    width: 95%;
+    bottom: 80px;
+  }
+
+  .add-tarefa-wrapper.ativo {
+    max-height: 260px;
+  }
+
+  .add-tarefa-float {
+    bottom: 80px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .creditos {
+    font-size: 11px;
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  body {
+    padding: 5px 0 70px 0;
+  }
+
+  .container {
+    width: 100%;
+    margin: 5px 0;
+    padding: 2px;
+    border-radius: 0;
+  }
+
+  .esquerda {
+    padding: 8px;
+  }
+
+  .calendario {
+    border-radius: 8px;
+  }
+
+  .calendario .mes {
+    height: 80px;
+    padding: 0 10px;
+    font-size: 0.95rem;
+  }
+
+  .calendario .mes .prev,
+  .calendario .mes .next {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+
+  .calendario .diaSemana {
+    height: 40px;
+    font-size: 0.75rem;
+    padding: 0 2px;
+  }
+
+  .calendario .dias {
+    padding: 0 2px;
+  }
+
+  .calendario .dias .dia {
+    height: 48px;
+    font-size: 0.85rem;
+    border: 1px solid #f8f8f8;
+  }
+
+  .calendario .dias .hoje {
+    font-size: 1.6rem;
+  }
+
+  .calendario .dias .ativo {
+    font-size: 1.3rem;
+  }
+
+  .calendario .dias .evento::after {
+    height: 4px;
+    width: 80%;
+  }
+
+  .calendario .ir-hoje {
+    flex-direction: column;
+    height: auto;
+    gap: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .calendario .ir-hoje .irPara {
+    width: 100%;
+  }
+
+  .calendario .ir-hoje .irPara input {
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .calendario .ir-hoje button {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .container .direita {
+    padding: 10px;
+    margin-top: 10px;
+  }
+
+  .direita .dt-hoje {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 10px;
+    padding-left: 15px;
+    gap: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .today-date .d-evento {
+    font-size: 1.3rem;
+  }
+
+  .today-date .dt-evento {
+    font-size: 0.9rem;
+  }
+
+  .tarefas-container {
+    padding: 8px 10px;
+  }
+
+  .tarefas-titulo {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  .tarefas-lista {
+    gap: 8px;
+  }
+
+  .tarefa {
+    padding: 10px 12px;
+    flex-wrap: wrap;
+  }
+
+  .tarefa-conteudo {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .tarefa-texto {
+    font-size: 0.85rem;
+  }
+
+  .tarefa-excluir {
+    align-self: flex-end;
+    margin-top: 5px;
+  }
+
+  .add-tarefa-wrapper {
+    width: 96%;
+    bottom: 70px;
+  }
+
+  .add-tarefa-wrapper.ativo {
+    max-height: 240px;
+  }
+
+  .add-cabecalho-tarefa {
+    height: 45px;
+    padding: 0 15px;
+  }
+
+  .add-cabecalho-tarefa .titulo {
+    font-size: 1rem;
+  }
+
+  .add-tarefa-dados {
+    padding: 15px;
+  }
+
+  .add-tarefa-input input {
+    height: 40px;
+    font-size: 0.9rem;
+  }
+
+  .add-tarefa-footer {
+    padding: 12px 15px;
+  }
+
+  .add-tarefa-btn {
+    height: 38px;
+    font-size: 0.9rem;
+  }
+
+  .add-tarefa-float {
+    bottom: 70px;
+    right: 15px;
+    width: 44px;
+    height: 44px;
+    font-size: 1rem;
+  }
+
+  .creditos {
+    font-size: 10px;
+    padding: 8px 5px;
+  }
 }

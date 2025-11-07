@@ -1,494 +1,455 @@
 const calendar = document.querySelector(".calendario"),
-    date = document.querySelector(".date"),
-    daysContainer = document.querySelector(".dias"),
-    next = document.querySelector(".proximo"),
-    prev = document.querySelector(".anterior"),
-    gotoBtn = document.querySelector(".ir-btn"),
-    todayBtn = document.querySelector(".hoje-btn"),
-    dateInput = document.querySelector(".data-input"),
-    eventDay = document.querySelector(".d-evento"),
-    eventDate = document.querySelector(".dt-evento"),
-    eventsContainer = document.querySelector(".eventos"),
-    addEventBtn = document.querySelector(".add-evento-btn"),
-    addEventWrapper = document.querySelector("add-evento-wrapper"),
-    addEventCloseBtn = document.querySelector(".fechar"),
-    addEventTitle = document.querySelector(".titulo-evento"),
-    addEventFrom = document.querySelector(".hora-inicio"),
-    addEventTo = document.querySelector(".hota-termino"),
-    addEventSubmit = document.querySelector(".add-event-btn");
+  date = document.querySelector(".date"),
+  daysContainer = document.querySelector(".dias"),
+  next = document.querySelector(".proximo"),
+  prev = document.querySelector(".anterior"),
+  gotoBtn = document.querySelector(".ir-btn"),
+  todayBtn = document.querySelector(".hoje-btn"),
+  dateInput = document.querySelector(".data-input"),
+  eventDay = document.querySelector(".d-evento"),
+  eventDate = document.querySelector(".dt-evento"),
+  tarefasContainer = document.querySelector(".tarefas-lista"),
+  addTarefaBtn = document.querySelector(".add-tarefa-float"),
+  addTarefaWrapper = document.querySelector(".add-tarefa-wrapper"),
+  addTarefaCloseBtn = document.querySelector(".fechar-tarefa"),
+  addTarefaInput = document.querySelector(".descricao-tarefa"),
+  addTarefaSubmit = document.querySelector(".add-tarefa-btn");
 
 let today = new Date();
-let activeDay
-let month = today.getMonth()
-let year = today.getFullYear()
+let activeDay;
+let month = today.getMonth();
+let year = today.getFullYear();
 
 const months = [
-    "Janeiro",
-    "Fevereiro",
-    "Março",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro"
-]
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro",
+];
+
 const dayName = [
-    "Domingo",
-    "Segunda",
-    "Terça",
-    "Quarta",
-    "Quinta",
-    "Sexta",
-    "Sábado"
-]
-const eventsArr = [
-    {
-        day: 13,
-        month: 11,
-        year: 2023,
-        events: [
-            {
-            title: "Novo Evento de teste(1)",
-            time: "10:00"
-            },
-            {
-            title: "Novo Evento de teste (2)",
-            time: "22:00"
-            }
-        ]
-    }
-]
+  "Domingo",
+  "Segunda",
+  "Terça",
+  "Quarta",
+  "Quinta",
+  "Sexta",
+  "Sábado",
+];
+
+// Array para armazenar tarefas
+let tarefasArr = [];
+
+// Carregar tarefas do localStorage ao iniciar
+function carregarTarefas() {
+  const tarefasSalvas = localStorage.getItem("tarefas");
+  if (tarefasSalvas) {
+    tarefasArr = JSON.parse(tarefasSalvas);
+  }
+}
+
+carregarTarefas();
 
 //funçao para adicionar dias
 
-function initCalendar(){
-    const firstDay = new Date(year, month, 1)
-    const lastDay = new Date(year, month+1, 0)
-    const prevLastDay = new Date(year, month, 0)
-        const prevDays = prevLastDay.getDate()
-        const lastDate = lastDay.getDate()
-        const day = firstDay.getDay()
-        const nextDays = 7 - lastDay.getDay() -1
+function initCalendar() {
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const lastDate = lastDay.getDate();
+  const day = firstDay.getDay();
+  const nextDays = 7 - lastDay.getDay() - 1;
 
-        date.innerHTML = months[month] + " " + year
+  date.innerHTML = months[month] + " " + year;
 
-        let days = ""
+  let days = "";
 
-        for (let x = day; x>0; x--){
-            days += `<div class="dia diaAnterior">${prevDays -x +1}</div>`
-        }
+  // Adiciona células vazias para os dias anteriores (sem mostrar números)
+  for (let x = day; x > 0; x--) {
+    days += `<div class="dia diaAnterior"></div>`;
+  }
 
-        for(let i = 1; i<=lastDate; i++){
+  // Adiciona os dias do mês atual
+  for (let i = 1; i <= lastDate; i++) {
+    let temTarefa = false;
+    tarefasArr.forEach((tarefaObj) => {
+      if (
+        tarefaObj.day === i &&
+        tarefaObj.month === month + 1 &&
+        tarefaObj.year === year
+      ) {
+        temTarefa = true;
+      }
+    });
 
-            let event =  false;
-            eventsArr.forEach((eventObj) => {
-                if (eventObj.day === i && eventObj.month === month +1 && eventObj.year === year){
-                    event = true
-                }
-            })
+    if (
+      i === new Date().getDate() &&
+      year === new Date().getFullYear() &&
+      month === new Date().getMonth()
+    ) {
+      activeDay = i;
+      getActiveDay(i);
+      atualizarTarefas(i);
 
-            if (
-                i === new Date().getDate() && 
-                year === new Date().getFullYear() 
-                && month === new Date().getMonth()
-                ){
-                    activeDay = i
-                    getActiveDay(i)
+      if (temTarefa) {
+        days += `<div class="dia hoje ativo evento">${i}</div>`;
+      } else {
+        days += `<div class="dia hoje ativo">${i}</div>`;
+      }
+    } else {
+      if (temTarefa) {
+        days += `<div class="dia evento">${i}</div>`;
+      } else {
+        days += `<div class="dia">${i}</div>`;
+      }
+    }
+  }
 
-                if (event) {
-                    days += `<div class="dia hoje ativo evento">${i}</div>`
-                } else {
-                    days += `<div class="dia hoje ativo">${i}</div>`
-                }
-            } else {
-                if (event){
-                days += `<div class="dia evento">${i}</div>`
-                } else {
-                    days += `<div class="dia">${i}</div>`
-                }
-            }
-        }
+  // Adiciona células vazias para os próximos dias (sem mostrar números)
+  for (let j = 1; j <= nextDays; j++) {
+    days += `<div class="dia proximoDia"></div>`;
+  }
 
-        for(let j = 1; j <= nextDays; j++){
-            days += `<div class="dia proximoDia" >${j}</div>`
-        }
-
-        daysContainer.innerHTML = days
-        addListner()
+  daysContainer.innerHTML = days;
+  addListner();
 }
 
-initCalendar()
+initCalendar();
 
 //mes anterior
 
 function prevMonth() {
-    month--;
-    if(month < 0) {
-        month = 11;
-        year--;
-    }
-    initCalendar()
+  month--;
+  if (month < 0) {
+    month = 11;
+    year--;
+  }
+  initCalendar();
 }
 
 //proximo mes
 
-function nextMonth(){
-    month++;
-    if(month > 11) {
-        month = 0;
-        year++;
-    }
-    initCalendar()
+function nextMonth() {
+  month++;
+  if (month > 11) {
+    month = 0;
+    year++;
+  }
+  initCalendar();
 }
 
-prev.addEventListener("click", prevMonth)
-next.addEventListener("click", nextMonth)
+prev.addEventListener("click", prevMonth);
+next.addEventListener("click", nextMonth);
 
-todayBtn.addEventListener("click", ()=> {
-    today = new Date()
-    month = today.getMonth()
-    year = today.getFullYear()
-    initCalendar()
-})
+todayBtn.addEventListener("click", () => {
+  today = new Date();
+  month = today.getMonth();
+  year = today.getFullYear();
+  initCalendar();
+});
 
-dateInput.addEventListener("input", (e) =>{
-    dateInput.value = dateInput.value.replace(/[^0-9/]/g, "")
+dateInput.addEventListener("input", (e) => {
+  dateInput.value = dateInput.value.replace(/[^0-9/]/g, "");
 
-    if (dateInput.value.length === 2) {
-        dateInput.value += "/"
+  if (dateInput.value.length === 2) {
+    dateInput.value += "/";
+  }
+  if (dateInput.value.length > 7) {
+    dateInput.value = dateInput.value.slice(0, 7);
+  }
+  if (e.inputType === "deleteContentBackward") {
+    if (dateInput.value.length === 3) {
+      dateInput.value = dateInput.value.slice(0, 2);
     }
-        if (dateInput.value.length > 7){
-            dateInput.value = dateInput.value.slice(0, 7)
-        }
-            if(e.inputType === "deleteContentBackward"){
-                if(dateInput.value.length === 3){
-                    dateInput.value = dateInput.value.slice(0, 2)
-                }
-            }
-})
+  }
+});
 
 gotoBtn.addEventListener("click", gotoDate);
 
-function gotoDate(){
-    const dateArr = dateInput.value.split("/")
-    if (date.length === 2) {
-        if(dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4){
-            month = dateArr[0] -1
-            year = dateArr[1]
-            initCalendar()
-            return
-        }
+function gotoDate() {
+  const dateArr = dateInput.value.split("/");
+  if (dateArr.length === 2) {
+    if (dateArr[0] > 0 && dateArr[0] < 13 && dateArr[1].length === 4) {
+      month = dateArr[0] - 1;
+      year = dateArr[1];
+      initCalendar();
+      return;
     }
-    alert("Data inválida")
+  }
+  alert("Data inválida");
 }
 
+function addListner() {
+  const days = document.querySelectorAll(".dia");
+  days.forEach((day) => {
+    day.addEventListener("click", (e) => {
+      activeDay = Number(e.target.innerHTML);
 
-    
+      getActiveDay(e.target.innerHTML);
+      atualizarTarefas(activeDay);
 
-addEventBtn.addEventListener("click", ()=>{
-    addEventContainer.classList.toggle("ativo")
-})
+      days.forEach((day) => {
+        day.classList.remove("ativo");
+      });
 
-addEventCloseBtn.addEventListener("click", ()=>{
-    addEventContainer.classList.remove("ativo")
-})
+      if (e.target.classList.contains("diaAnterior")) {
+        prevMonth();
 
-document.addEventListener("click", (e) => {
-    if(e.target !== addEventBtn && !addEventContainer.contains(e.target)) {
-        addEventContainer.classList.remove("ativo")
-    }
-})
+        setTimeout(() => {
+          const days = document.querySelectorAll(".dia");
 
-addEventTitle.addEventListener("input", (e) => {
-    addEventTitle.value = addEventTitle.value.slice(0, 100)
-})
+          days.forEach((day) => {
+            if (
+              !day.classList.contains("diaAnterior") &&
+              day.innerHTML === e.target.innerHTML
+            ) {
+              day.classList.add("ativo");
+            }
+          });
+        }, 100);
+      } else if (e.target.classList.contains("proximoDia")) {
+        nextMonth();
 
-addEventFrom.addEventListener("input", (e) => {
-    addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "")
-    if(addEventFrom.value.length === 2) {
-        addEventFrom.value += ":"
-    }
+        setTimeout(() => {
+          const days = document.querySelectorAll(".dia");
 
-    if (addEventFrom.value.length >5) {
-        addEventFrom.value = addEventFrom.value.slice(0, 5)
-    }
-})
-
-addEventTo.addEventListener("input", (e) => {
-    addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "")
-    if(addEventTo.value.length === 2) {
-        addEventTo.value += ":"
-    }
-
-    if (addEventTo.value.length >5) {
-        addEventTo.value = addEventTo.value.slice(0, 5)
-    }
-})
-
-function addListner(){
-    const days = document.querySelectorAll(".dia")
-    days.forEach((day) => {
-        day.addEventListener("click", (e) => {
-            activeDay = Number(e.target.innerHTML)
-
-            getActiveDay(e.target.innerHTML)
-
-            days.forEach((day) => {
-                day.classList.remove("ativo")
-            })
-
-            if(e.target.classList.contains("diaAnterior")) {
-                prevMonth()
-
-                setTimeout(() => {
-                    const days = document.querySelectorAll(".dia")
-
-                    days.forEach((day) => {
-                        if(
-                            !day.classList.contains("diaAnterior") && 
-                            day.innerHTML === e.target.innerHTML
-                            ) {
-                            day.classLits.add("ativo")
-                        }
-                    })
-                }, 100)
-            } else if(e.target.classList.contains("proximoDia")) {
-                nextMonth()
-
-                setTimeout(() => {
-                    const days = document.querySelectorAll(".dia")
-
-                    days.forEach((day) => {
-                        if(
-                            !day.classList.contains("proximoDia")
-                            && day.innerHTML === e.target.innerHTML
-                            ) {
-                            day.classLits.add("ativo")
-                        }
-                    })
-                }, 100)
-             }
-         })
-    })
+          days.forEach((day) => {
+            if (
+              !day.classList.contains("proximoDia") &&
+              day.innerHTML === e.target.innerHTML
+            ) {
+              day.classList.add("ativo");
+            }
+          });
+        }, 100);
+      } else {
+        e.target.classList.add("ativo");
+      }
+    });
+  });
 }
 
 function getActiveDay(date) {
-    const day = new Date(year, month, date)
-    const dayName = day.toString().split("")[0]
+  const day = new Date(year, month, date);
+  const dayNameStr = dayName[day.getDay()];
 
-    eventDay.innerHTML = dayName
-    eventDate.innerHTML = date + " " + months[month] + " " + year
+  eventDay.innerHTML = dayNameStr;
+  eventDate.innerHTML = date + " " + months[month] + " " + year;
 }
 
-function updateEvents(date) {
-    let events = "";
-    eventsArr.forEach((event) => {
-      if (
-        date === event.day &&
-        month + 1 === event.month &&
-        year === event.year
-      ) {
-        event.events.forEach((event) => {
-          events += `<div class="evento">
-              <div class="titulo">
-                <i class="fas fa-circle"></i>
-                <h3 class="titulo-evento">${event.title}</h3>
-              </div>
-              <div class="hora-evento">
-                <span class="hora-evento">${event.time}</span>
-              </div>
-          </div>`;
-        });
-      }
-    });
-    if (events === "") {
-      events = `<div class="semEvento">
-              <h3>Sem Eventos</h3>
-          </div>`;
-    }
-    eventsContainer.innerHTML = events;
-    saveEvents();
-  }
-  
-  addEventBtn.addEventListener("click", () => {
-    addEventWrapper.classList.toggle("ativo");
-  });
-  
-  addEventCloseBtn.addEventListener("click", () => {
-    addEventWrapper.classList.remove("ativo");
-  });
-  
-  document.addEventListener("click", (e) => {
-    if (e.target !== addEventBtn && !addEventWrapper.contains(e.target)) {
-      addEventWrapper.classList.remove("ativo");
-    }
-  });
-  
-  addEventTitle.addEventListener("input", (e) => {
-    addEventTitle.value = addEventTitle.value.slice(0, 60);
-  });
-  
-    
-  addEventFrom.addEventListener("input", (e) => {
-    addEventFrom.value = addEventFrom.value.replace(/[^0-9:]/g, "");
-    if (addEventFrom.value.length === 2) {
-      addEventFrom.value += ":";
-    }
-    if (addEventFrom.value.length > 5) {
-      addEventFrom.value = addEventFrom.value.slice(0, 5);
-    }
-  });
-  
-  addEventTo.addEventListener("input", (e) => {
-    addEventTo.value = addEventTo.value.replace(/[^0-9:]/g, "");
-    if (addEventTo.value.length === 2) {
-      addEventTo.value += ":";
-    }
-    if (addEventTo.value.length > 5) {
-      addEventTo.value = addEventTo.value.slice(0, 5);
-    }
-  });
-  
-  addEventSubmit.addEventListener("click", () => {
-    const eventTitle = addEventTitle.value;
-    const eventTimeFrom = addEventFrom.value;
-    const eventTimeTo = addEventTo.value;
-    if (eventTitle === "" || eventTimeFrom === "" || eventTimeTo === "") {
-      alert("Por favor preencha todos os campos!");
-      return;
-    }
-  
-    const timeFromArr = eventTimeFrom.split(":");
-    const timeToArr = eventTimeTo.split(":");
+// Função para atualizar as tarefas exibidas
+function atualizarTarefas(date) {
+  let tarefas = "";
+
+  tarefasArr.forEach((tarefaObj) => {
     if (
-      timeFromArr.length !== 2 ||
-      timeToArr.length !== 2 ||
-      timeFromArr[0] > 23 ||
-      timeFromArr[1] > 59 ||
-      timeToArr[0] > 23 ||
-      timeToArr[1] > 59
+      date === tarefaObj.day &&
+      month + 1 === tarefaObj.month &&
+      year === tarefaObj.year
     ) {
-      alert("Hora Inválida");
-      return;
+      tarefaObj.tarefas.forEach((tarefa, index) => {
+        const concluida = tarefa.concluida ? "concluida" : "";
+        const checked = tarefa.concluida ? "checked" : "";
+
+        tarefas += `
+                    <div class="tarefa ${concluida}" data-index="${index}">
+                        <div class="tarefa-conteudo">
+                            <input type="checkbox" class="tarefa-checkbox" ${checked}>
+                            <span class="tarefa-texto">${tarefa.descricao}</span>
+                        </div>
+                        <button class="tarefa-excluir" title="Excluir tarefa">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+      });
     }
-  
-    const timeFrom = convertTime(eventTimeFrom);
-    const timeTo = convertTime(eventTimeTo);
-  
-    let eventExist = false;
-    eventsArr.forEach((event) => {
+  });
+
+  if (tarefas === "") {
+    tarefas = `<div class="sem-tarefas">
+            <p>Nenhuma tarefa para este dia</p>
+        </div>`;
+  }
+
+  tarefasContainer.innerHTML = tarefas;
+  adicionarEventosTarefas();
+}
+
+// Função para adicionar eventos aos elementos das tarefas
+function adicionarEventosTarefas() {
+  // Evento para marcar/desmarcar tarefa como concluída
+  const checkboxes = document.querySelectorAll(".tarefa-checkbox");
+  checkboxes.forEach((checkbox, index) => {
+    checkbox.addEventListener("change", (e) => {
+      marcarTarefaConcluida(index, e.target.checked);
+    });
+  });
+
+  // Evento para excluir tarefa
+  const botoesExcluir = document.querySelectorAll(".tarefa-excluir");
+  botoesExcluir.forEach((botao, index) => {
+    botao.addEventListener("click", () => {
+      excluirTarefa(index);
+    });
+  });
+}
+
+// Função para marcar tarefa como concluída
+function marcarTarefaConcluida(index, concluida) {
+  tarefasArr.forEach((tarefaObj) => {
+    if (
+      tarefaObj.day === activeDay &&
+      tarefaObj.month === month + 1 &&
+      tarefaObj.year === year
+    ) {
+      tarefaObj.tarefas[index].concluida = concluida;
+    }
+  });
+
+  salvarTarefas();
+  atualizarTarefas(activeDay);
+}
+
+// Função para excluir tarefa
+function excluirTarefa(index) {
+  if (confirm("Tem certeza que deseja excluir esta tarefa?")) {
+    tarefasArr.forEach((tarefaObj, objIndex) => {
       if (
-        event.day === activeDay &&
-        event.month === month + 1 &&
-        event.year === year
+        tarefaObj.day === activeDay &&
+        tarefaObj.month === month + 1 &&
+        tarefaObj.year === year
       ) {
-        event.events.forEach((event) => {
-          if (event.title === eventTitle) {
-            eventExist = true;
-          }
-        });
+        tarefaObj.tarefas.splice(index, 1);
+
+        // Se não houver mais tarefas neste dia, remove o objeto inteiro
+        if (tarefaObj.tarefas.length === 0) {
+          tarefasArr.splice(objIndex, 1);
+        }
       }
     });
-    if (eventExist) {
-      alert("Compromisso já agendado");
-      return;
-    }
-    const newEvent = {
-      title: eventTitle,
-      time: timeFrom + " - " + timeTo,
-    };
-    console.log(newEvent);
-    console.log(activeDay);
-    let eventAdded = false;
-    if (eventsArr.length > 0) {
-      eventsArr.forEach((item) => {
+
+    salvarTarefas();
+    atualizarTarefas(activeDay);
+
+    // Reinicializa o calendário para atualizar a marcação visual
+    initCalendar();
+
+    // Reaplica a classe ativo no dia selecionado
+    setTimeout(() => {
+      const days = document.querySelectorAll(".dia");
+      days.forEach((day) => {
         if (
-          item.day === activeDay &&
-          item.month === month + 1 &&
-          item.year === year
+          Number(day.innerHTML) === activeDay &&
+          !day.classList.contains("diaAnterior") &&
+          !day.classList.contains("proximoDia")
         ) {
-          item.events.push(newEvent);
-          eventAdded = true;
+          day.classList.add("ativo");
         }
       });
-    }
-  
-    if (!eventAdded) {
-      eventsArr.push({
-        day: activeDay,
-        month: month + 1,
-        year: year,
-        events: [newEvent],
-      });
-    }
-  
-    console.log(eventsArr);
-    addEventWrapper.classList.remove("ativo");
-    addEventTitle.value = "";
-    addEventFrom.value = "";
-    addEventTo.value = "";
-    updateEvents(activeDay);
+    }, 50);
+  }
+}
 
-    const activeDayEl = document.querySelector(".dia.ativo");
-    if (!activeDayEl.classList.contains("evento")) {
-      activeDayEl.classList.add("evento");
+// Função para salvar tarefas no localStorage
+function salvarTarefas() {
+  localStorage.setItem("tarefas", JSON.stringify(tarefasArr));
+}
+
+// Eventos do modal de adicionar tarefa
+addTarefaBtn.addEventListener("click", () => {
+  addTarefaWrapper.classList.toggle("ativo");
+});
+
+addTarefaCloseBtn.addEventListener("click", () => {
+  addTarefaWrapper.classList.remove("ativo");
+});
+
+document.addEventListener("click", (e) => {
+  if (e.target !== addTarefaBtn && !addTarefaWrapper.contains(e.target)) {
+    addTarefaWrapper.classList.remove("ativo");
+  }
+});
+
+// Limitar caracteres no input de tarefa
+addTarefaInput.addEventListener("input", (e) => {
+  addTarefaInput.value = addTarefaInput.value.slice(0, 200);
+});
+
+// Adicionar tarefa ao pressionar Enter
+addTarefaInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    addTarefaSubmit.click();
+  }
+});
+
+// Adicionar nova tarefa
+addTarefaSubmit.addEventListener("click", () => {
+  const descricaoTarefa = addTarefaInput.value.trim();
+
+  if (descricaoTarefa === "") {
+    alert("Por favor, insira a descrição da tarefa!");
+    return;
+  }
+
+  const novaTarefa = {
+    descricao: descricaoTarefa,
+    concluida: false,
+  };
+
+  let tarefaAdicionada = false;
+
+  // Verifica se já existe um objeto de tarefas para este dia
+  tarefasArr.forEach((tarefaObj) => {
+    if (
+      tarefaObj.day === activeDay &&
+      tarefaObj.month === month + 1 &&
+      tarefaObj.year === year
+    ) {
+      tarefaObj.tarefas.push(novaTarefa);
+      tarefaAdicionada = true;
     }
   });
-  
-  eventsContainer.addEventListener("click", (e) => {
-    if (e.target.classList.contains("evento")) {
-      if (confirm("Quer realmente excluir o evento?")) {
-        const eventTitle = e.target.children[0].children[1].innerHTML;
-        eventsArr.forEach((event) => {
-          if (
-            event.day === activeDay &&
-            event.month === month + 1 &&
-            event.year === year
-          ) {
-            event.events.forEach((item, index) => {
-              if (item.title === eventTitle) {
-                event.events.splice(index, 1);
-              }
-            });
 
-            if (event.events.length === 0) {
-              eventsArr.splice(eventsArr.indexOf(event), 1);
+  // Se não existe, cria um novo objeto de tarefas para este dia
+  if (!tarefaAdicionada) {
+    tarefasArr.push({
+      day: activeDay,
+      month: month + 1,
+      year: year,
+      tarefas: [novaTarefa],
+    });
+  }
 
-              const activeDayEl = document.querySelector(".dia.ativo");
-              if (activeDayEl.classList.contains("evento")) {
-                activeDayEl.classList.remove("evento");
-              }
-            }
-          }
-        });
-        updateEvents(activeDay);
+  // Limpa o input e fecha o modal
+  addTarefaInput.value = "";
+  addTarefaWrapper.classList.remove("ativo");
+
+  // Atualiza a interface
+  atualizarTarefas(activeDay);
+  salvarTarefas();
+
+  // Reinicializa o calendário para atualizar a marcação visual
+  initCalendar();
+
+  // Reaplica a classe ativo no dia selecionado
+  setTimeout(() => {
+    const days = document.querySelectorAll(".dia");
+    days.forEach((day) => {
+      if (
+        Number(day.innerHTML) === activeDay &&
+        !day.classList.contains("diaAnterior") &&
+        !day.classList.contains("proximoDia")
+      ) {
+        day.classList.add("ativo");
       }
-    }
-  });
-  
-  function saveEvents() {
-    localStorage.setItem("eventos", JSON.stringify(eventsArr));
-  }
-  
-  function getEvents() {
-
-    if (localStorage.getItem("eventos") === null) {
-      return;
-    }
-    eventsArr.push(...JSON.parse(localStorage.getItem("eventos")));
-  }
-  
-  function convertTime(time) {
-
-    let timeArr = time.split(":");
-    let timeHour = timeArr[0];
-    let timeMin = timeArr[1];
-    let timeFormat = timeHour >= 12 ? "PM" : "AM";
-    timeHour = timeHour % 12 || 12;
-    time = timeHour + ":" + timeMin + " " + timeFormat;
-    return time;
-  }
+    });
+  }, 50);
+});
