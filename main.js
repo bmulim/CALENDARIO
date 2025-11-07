@@ -381,9 +381,11 @@ addTarefaCloseBtn.addEventListener("click", () => {
 });
 
 document.addEventListener("click", (e) => {
-  if (e.target !== addTarefaBtn && 
-      e.target !== addTarefaBtnMobile && 
-      !addTarefaWrapper.contains(e.target)) {
+  if (
+    e.target !== addTarefaBtn &&
+    e.target !== addTarefaBtnMobile &&
+    !addTarefaWrapper.contains(e.target)
+  ) {
     addTarefaWrapper.classList.remove("ativo");
   }
 });
